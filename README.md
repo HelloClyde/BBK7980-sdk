@@ -1,4 +1,4 @@
-# BBK7980 SDK 1.1.0
+# BBK7980 SDK 1.1.1
 
 [![Build](https://github.com/HelloClyde/BBK7980-sdk/actions/workflows/build-release.yml/badge.svg)](https://github.com/HelloClyde/BBK7980-sdk/actions/workflows/build-release.yml)
 
@@ -12,12 +12,13 @@ cc65 与原厂调用约定由运行库切换；应用代码没有 SEI，也不�
 
 ## 快速开始
 
-从 [v1.1.0 Release](https://github.com/HelloClyde/BBK7980-sdk/releases/tag/v1.1.0)
-下载 `BBK7980-SDK-1.1.0-win64.zip` 和 `SHA256SUMS.txt`。这是社区预发布，
+从 [v1.1.1 Release](https://github.com/HelloClyde/BBK7980-sdk/releases/tag/v1.1.1)
+下载 `BBK7980-SDK-1.1.1-win64.zip` 和 `SHA256SUMS.txt`。这是社区预发布，
 适配 7980 V1.10，已完成原厂固件模拟器验证，真机与 PCLINK 待实测。
 
-Windows x64 发布包已附固定版本 cc65。另需 Python 3.10 或更新版本；普通构建
-只使用 Python 标准库，不需要 Pillow、GCC、pefile 或模拟器。
+Windows x64 发布包已附固定版本 cc65，另需 Python 3.10 或更新版本。
+默认图标或原始 `.bin` 图标的普通构建只使用 Python 标准库，不需要 GCC、pefile
+或模拟器；使用 PNG 图标或生成图标预览时另装 Pillow，见下方图标说明。
 
 在 SDK 解压目录中运行：
 
@@ -51,24 +52,25 @@ Esc/Home 返回。完整接线与安装步骤见 [INSTALL](docs/INSTALL.md)。
 git clone https://github.com/HelloClyde/BBK7980-sdk.git
 cd BBK7980-sdk
 python -X utf8 tools/install_toolchain.py
+python -m pip install -r requirements-images.txt
 python -X utf8 tools/build.py examples/hello
 python -X utf8 tools/ci.py
 ```
 
 工具链从固定 cc65 提交的源码 ZIP 构建，先校验 SHA-256；仓库没有 SDK 子模块。
-发布 ZIP 则附带已构建的 Windows 工具链，日常开发只需 Python。
+发布 ZIP 则附带已构建的 Windows 工具链；PNG 图标依赖是可选安装项。
 
 ## 应用名称、图标与分类
 
 这些属性在应用目录的 `project.json` 中配置，构建器已支持自定义图标和原厂分类。
-例如，项目目录中放置 `main.c` 和 `icon.bin`，配置为：
+例如，项目目录中放置 `main.c` 和 `icon.png`，配置为：
 
 ```json
 {
   "name": "我的应用",
   "category": 9,
   "sources": ["main.c"],
-  "icon": "icon.bin"
+  "icon": "icon.png"
 }
 ```
 
@@ -77,16 +79,46 @@ python -X utf8 tools/ci.py
 
 ### 自定义图标
 
-- `icon` 是相对于应用目录的文件路径，也可写成 `assets/icon.bin`；省略时使用 SDK 默认图标。
-- 文件为 **256 字节的原始 2bpp 点阵**：按 32×32 像素存储，逐行排列，每行 8 字节。
+**从 1.1.1 起支持直接使用 PNG，也提供独立转换脚本。**
+`icon` 是相对于应用目录的文件路径，可写成 `icon.png`、`assets/icon.png` 或原始 `icon.bin`；
+省略时使用 SDK 默认图标。
+
+先安装 PNG/预览所需的 Pillow（不随 SDK 捆绑）：
+
+```powershell
+python -m pip install -r requirements-images.txt
+```
+
+把 PNG 放进项目，按上面的 JSON 配置后正常构建即可，无需先生成 `.bin`：
+
+```powershell
+python -X utf8 tools/build.py ../myapp
+```
+
+PNG 可使用任意尺寸，支持 RGB、RGBA、灰度和带透明色的索引图。转换时将透明像素与
+白色背景合成，按亮度转为四级灰度；保持宽高比缩放到 **32×24** 内并居中，
+空白处填最浅色，不裁切图片，默认无抖动。建议按 32×24 设计；正方形 PNG 会留左右空白。
+
+也可以单独转换并查看量化后的可见区域：
+
+```powershell
+python -X utf8 tools/convert_icon.py ../myapp/icon.png -o ../myapp/icon.bin --preview ../myapp/icon-preview.png
+```
+
+输出 `icon.bin` 为 256 字节，预览为 32×24 PNG；省略 `-o` 时使用输入文件的同名 `.bin`。
+如改用转换结果，在 `project.json` 中设置 `"icon": "icon.bin"`，之后构建就不再需要 Pillow。
+
+原始 `.bin` 格式保持兼容：
+
+- **256 字节的原始 2bpp 点阵**，按 32×32 像素存储，逐行排列，每行 8 字节。
 - 每字节从高到低保存 4 个像素（位 7–6、5–4、3–2、1–0）；灰度值 0 最浅、3 最深。
-  例如像素 `0, 1, 2, 3` 打包为 `0x1B`。不含图片文件头或调色板。
-- **V1.10 原厂桌面实际显示顶部 32×24 像素**，底部 8 行不会显示；仍须提供完整 256 字节，
-  底部可填零。请把关键图案放在前 24 行。
-- 当前构建器只读取上述原始 `.bin`，尚不直接导入 PNG/JPG/BMP，也未附带图片转换工具。
+  例如像素 `0, 1, 2, 3` 打包为 `0x1B`，不含图片文件头或调色板。
+- **V1.10 原厂桌面显示顶部 32×24 像素**，底部 8 行不可见。
+  PNG 转换器会自动将完整图片放进可见区域，再把底部 8 行填零；手工制作 `.bin` 时也应注意此限制。
 
 可直接参考 [扫雷的配置](examples/minesweeper/project.json) 和
-[自定义图标文件](examples/minesweeper/icon.bin)。
+[自定义图标文件](examples/minesweeper/icon.bin)，或查看同一图标的
+[PNG 示例](examples/minesweeper/icon.png)。
 
 ### 原厂分类
 
@@ -166,8 +198,9 @@ SDK 自带五个示例均属于“娱乐”；自动演示和验证脚本按这�
 具体结果、哈希、旋律 WAV 和截图随包
 保存在 `validation/`。验证方法见 [验证记录](docs/VALIDATION.md)。
 
-公共 CI 从源码构建工具链和五个示例、执行 13 项宿主 C 测试、校验封装与
-模拟器已验证二进制的 SHA-256，并检查项目模板。它不下载原厂固件，也不声称
+公共 CI 从源码构建工具链和五个示例，执行 13 项宿主 C 测试及 10 项图标转换测试、
+校验封装与模拟器已验证二进制的 SHA-256，并检查项目模板和 PNG 图标入包。
+它不下载原厂固件，也不声称
 在 CI 中重新执行模拟器或真机测试。
 
 **当前验证环境是执行原厂固件的模拟器，真机与 PCLINK 对本程序包的接受情况
@@ -187,8 +220,9 @@ SDK 不附带原厂 ROM、字库或 PCLINK。字体由运行中的机器/模拟�
 | 用途 | 依赖 |
 | --- | --- |
 | 真机运行 | 朗文 7980 V1.10、机器已有字库；传输需专用下载线与 PCLINK 1.10，接受情况待实测 |
-| 发布 ZIP 开发 | Windows x64、Python 3.10+；ZIP 含固定 cc65，无额外 Python 包 |
-| 源码构建 / 宿主测试 | Python 3.10+、GCC、GNU make；cc65 固定提交见下方 |
+| 发布 ZIP 开发 | Windows x64、Python 3.10+；ZIP 含固定 cc65，默认/原始 `.bin` 图标无需额外 Python 包 |
+| PNG 图标 / 图标预览 | 可选 Pillow 12.3.0：`python -m pip install -r requirements-images.txt` |
+| 源码构建 / 宿主测试 | Python 3.10+、GCC、GNU make；完整测试另需上述 Pillow；cc65 固定提交见下方 |
 | 可选模拟器 | Windows x64、Pillow、用户自行提供的固件及 NAND/font 输入；源码检出先编译 GPL 后端 |
 | 可选固件审计 | pefile；输入为用户已有的原厂升级程序 |
 

@@ -1,0 +1,21 @@
+{
+  "result": "passed",
+  "sdk": "1.1.1",
+  "environment": "Original V1.10 firmware in emulator; physical device not tested",
+  "firmware_sha256": "1f020acdb26a3081839e89f89f325649c231b89e7541505f9fa01edc4d4533a1",
+  "application_sha256": "bfc9b4658312575b602642cf6b723ea7f32282d853cd20ba0bbc5d7559591a2b",
+  "payload_sha256": "6951c84f333848392cb6bbea9e9cfe069545614359b6c51b0d3ffb84d3f9e6b3",
+  "input_png_sha256": "3a134d19ab4d8504fec0a5aa68ab409a471e0350eee61a87db8475013ed50384",
+  "icon_sha256": "2393336273f5f72d5a59aec4b089fba2745f6e4125054f403409e6f29bb20c96",
+  "category": 4,
+  "category_name": "听力",
+  "checks": [
+    "Direct PNG and CLI-converted raw icon produce byte-identical transfer files",
+    "Container category is 4 and icon bytes match conversion",
+    "Original guest UART reads back identical application payload",
+    "All 32x24 visible desktop pixels match converted PNG",
+    "PNG preview matches visible four-shade pixels",
+    "Hidden bottom eight rows are zero",
+    "Launch from non-default category, native key event, and Esc return with IRQ enabled"
+  ]
+}

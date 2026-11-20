@@ -9,7 +9,7 @@ ROOT=Path(__file__).resolve().parents[1]
 VERSION=json.loads((ROOT/'SDK.json').read_text(encoding='utf8'))['version']
 
 def release_files():
-    for name in ['README.md','LICENSE','THIRD_PARTY.md','CHANGELOG.md','SDK.json','build-examples.cmd','.gitignore','.gitattributes']:
+    for name in ['README.md','LICENSE','THIRD_PARTY.md','CHANGELOG.md','SDK.json','build-examples.cmd','requirements-images.txt','.gitignore','.gitattributes']:
         yield Path(name),(ROOT/name).read_bytes()
     for folder in ['include','cfg','src','tools','tests','docs','research','third_party','validation','.github']:
         for p in sorted((ROOT/folder).rglob('*')):

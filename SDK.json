@@ -1,6 +1,6 @@
 {
   "name": "BBK 7980 Native SDK",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "edition": "community",
   "target": "7980-v110",
   "cpu": "65C02",

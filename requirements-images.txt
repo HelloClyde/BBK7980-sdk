@@ -1,0 +1,2 @@
+# Optional for PNG icons and icon previews; raw/default icons need only Python.
+Pillow==12.3.0

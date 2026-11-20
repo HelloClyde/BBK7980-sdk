@@ -18,6 +18,7 @@ pacman -S --needed mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-make
 git clone https://github.com/HelloClyde/BBK7980-sdk.git
 cd BBK7980-sdk
 python -X utf8 tools/install_toolchain.py
+python -m pip install -r requirements-images.txt
 python -X utf8 tools/ci.py
 python -X utf8 emulator-support/build.py
 python -X utf8 tools/package.py
@@ -31,6 +32,9 @@ python -X utf8 tools/verify_release.py dist
 
 `tools/ci.py` 会从 C/汇编源码构建全部示例、执行宿主 C 测试、检查五个
 BJBBK.110 文件、逐一比对已完成模拟器验证的二进制哈希，并构建外部项目模板。
+另外执行 PNG 的灰度、透明、缩放、点阵格式和命令行预览检查，确认 PNG 图标及
+非默认分类实际进入传输文件。完整测试需安装 `requirements-images.txt` 中的 Pillow；
+默认图标和原始 `.bin` 图标的普通应用构建仍只需 Python 标准库。
 `tools/package.py` 只在 Windows 生成 win64 发行包。
 
 普通应用编译不需要宿主 GCC，使用发布 ZIP 后可直接运行：
@@ -42,7 +46,7 @@ python -X utf8 tools/build.py ../myapp
 ```
 
 也可通过 `CC65_HOME` 或 `tools/build.py --compiler PATH` 指定工具链。
-其他 cc65 版本可能改变二进制；1.1.0 的精确基线检查仍要求固定版本的结果。
+其他 cc65 版本可能改变二进制；1.1.x 的精确基线检查仍要求固定版本的结果。
 
 ## Linux
 

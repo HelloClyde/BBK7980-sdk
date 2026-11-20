@@ -35,6 +35,8 @@ jobs:
             mingw-w64-ucrt-x86_64-make
       - name: Build hash-pinned cc65 source
         run: python -X utf8 tools/install_toolchain.py
+      - name: Install PNG icon dependencies
+        run: python -m pip install -r requirements-images.txt
       - name: Build and verify five examples and host tests
         run: python -X utf8 tools/ci.py
       - name: Build optional GPL emulator backend

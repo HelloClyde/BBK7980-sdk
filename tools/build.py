@@ -7,9 +7,10 @@ import os
 import shutil
 import struct
 import subprocess
+from convert_icon import load_icon
 
 ROOT=Path(__file__).resolve().parents[1]
-VERSION='1.1.0'
+VERSION=json.loads((ROOT/'SDK.json').read_text(encoding='utf8'))['version']
 
 def compiler_path(value=None):
     exe='cl65.exe' if os.name=='nt' else 'cl65'
@@ -29,7 +30,8 @@ def runtime(compiler):
     version=subprocess.run([str(compiler),'--version'],capture_output=True,text=True,check=True).stderr.strip()
     digest=hashlib.sha256(version.encode()+b''.join(p.read_bytes() for p in tracked)).hexdigest()
     stamp=out/'runtime.json'
-    if stamp.exists() and json.loads(stamp.read_text())['source_sha256']==digest and all((out/p).exists() for p in ['bbk7980-v110.lib','crt0.o']):return out
+    cached=json.loads(stamp.read_text()) if stamp.exists() else {}
+    if cached.get('sdk')==VERSION and cached.get('source_sha256')==digest and all((out/p).exists() for p in ['bbk7980-v110.lib','crt0.o']):return out
     objects=[]
     for source in [ROOT/'src/crt0.s',*sources]:
         target=out/(source.stem+'.o')
@@ -64,6 +66,7 @@ def build(project,compiler=None,output=None):
     if not caption or len(caption)>8 or any(c in name for c in '/\\:\0'):raise ValueError('Name must fit 8 GBK bytes and contain no path separators')
     category=int(spec.get('category',9))
     if not 1<=category<=11:raise ValueError('Category must be 1..11')
+    icon=load_icon(project/spec['icon']) if 'icon' in spec else default_icon()
     compiler=compiler_path(compiler);lib=runtime(compiler)
     out=Path(output).resolve() if output else project/'build';out.mkdir(parents=True,exist_ok=True)
     objects=[]
@@ -78,8 +81,6 @@ def build(project,compiler=None,output=None):
     if len(code)!=0x3fff:raise ValueError('Unexpected linked bank size')
     payload=bytearray(0x8000);payload[:len(code)]=code
     payload[0x4000:0x4008]=caption.ljust(8,b' ')
-    icon=(project/spec['icon']).read_bytes() if 'icon' in spec else default_icon()
-    if len(icon)!=256:raise ValueError('Icon must be 256 bytes, packed 32x32 at 2bpp')
     payload[0x4010:0x4110]=icon;payload[0x7c00:0x7c00+len(caption)]=caption;payload[0x7c14]=0xff
     checksum_banks(payload)
     header=bytearray(128);header[:9]=b'BJBBK.110';header[12:16]=b'exe\0'

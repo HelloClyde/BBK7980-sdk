@@ -1,5 +1,13 @@
 # Changes
 
+## 1.1.1 — 2026-11-21
+
+- Accept PNG directly in project.json's icon field, while keeping raw/default icons dependency-free.
+- Add tools/convert_icon.py with four-shade conversion, white alpha compositing, aspect-preserving 32x24 fitting and PNG preview.
+- Add optional pinned Pillow dependency, 10 icon tests and build-container integration checks.
+- Document all 11 native categories and the desktop's visible 32x24 icon area.
+- Keep all five device binaries byte-identical to the emulator-validated 1.1.0 baseline.
+
 ## 1.1.0 — 2026-11-21
 
 - First public source repository with pinned cc65 source bootstrap and GitHub Actions/Release.
