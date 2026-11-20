@@ -1,0 +1,9 @@
+{
+  "name": "扫雷",
+  "category": 9,
+  "sources": [
+    "main.c",
+    "game.c"
+  ],
+  "icon": "icon.bin"
+}

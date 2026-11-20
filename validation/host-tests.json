@@ -1,0 +1,9 @@
+{
+  "result": "passed",
+  "tests": 13,
+  "sdk": "1.1.0",
+  "coverage": [
+    "6 graphics packing/clipping cases",
+    "7 native C Minesweeper rules cases"
+  ]
+}

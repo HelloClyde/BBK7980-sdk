@@ -1,0 +1,42 @@
+{
+  "result": "passed",
+  "checks": [
+    "Create/write/close/read 600 bytes across a NAND page",
+    "File survives NAND export/import and full CPU reset; original UART reads exact bytes",
+    "Native writes preserve the original font file",
+    "UPDATE plus absolute seek preserves untouched bytes",
+    "Exclusive create rejects existing file",
+    "Read-only stream rejects writes and still closes",
+    "REPLACE truncates an existing file",
+    "Create/delete removes only the requested data file",
+    "Current/EOF seeks and ROM-literal writes produce sho!t+",
+    "Updated six-byte file is readable through original UART",
+    "PSG-enabled board is available",
+    "Original PSG registers play the complete 17-note/rest score",
+    "Melody changes pitch through actual PSG frequency register writes",
+    "Music C instructions leave IRQ enabled and system IRQs keep running",
+    "PSG device model produces non-silent bipolar PCM",
+    "First note measures approximately 262 Hz in the emulated output",
+    "Music completion shuts down PSG output",
+    "Esc cancels music, silences PSG and returns to the original shell",
+    "Home cancels music, silences PSG and returns to the original shell"
+  ],
+  "installed": [
+    {
+      "name": "存储演示.exe",
+      "sha256": "876aa0aa9454c715740df198f9ee560335e9310c5ce4b68504638e01c6901e74",
+      "readback": "identical"
+    },
+    {
+      "name": "音乐演示.exe",
+      "sha256": "4d958205c48ade24e44d3d3b8b249107dea00b64419d71c5f19841df63cc6e40",
+      "readback": "identical"
+    }
+  ],
+  "music_sdk_instruction_samples": 3242,
+  "first_note_hz": 262.1255349500713,
+  "wav_seconds": 4.528888888888889,
+  "pcm_sha256": "95eaf5f6cb5005242d33517e243fb0f44abb9f0616ce460045abcc833d8148fb",
+  "wav_sha256": "5c94c81745180740f63d4a55a6208e3b4ef7b96723ee3d96cb95242a179e0c24",
+  "io_profile": "storage and music occupy entertainment entries 7 and 8"
+}

@@ -1,0 +1,66 @@
+{
+  "result": "passed",
+  "checks": [
+    "C initialized DATA and BSS/stack coexist with IRQs",
+    "C arithmetic survives interrupts",
+    "Original glyph service reads 12/16/24-dot characters",
+    "All three native glyph byte sequences match font file",
+    "Native file lookup accepts ROM string literals and missing files",
+    "Native file size returns 32-bit length",
+    "Native file read crosses NAND page boundaries",
+    "File reader clamps EOF and rejects invalid IDs",
+    "OS IRQs and periodic events continue while C application waits",
+    "Native keyboard event and logical translation 50",
+    "Native keyboard event and logical translation 58",
+    "Native keyboard event and logical translation 34",
+    "Native keyboard event and logical translation 40",
+    "Application event wait leaves CPU IRQs enabled",
+    "Esc returns to OS event wait with IRQ enabled",
+    "Hello example uses initialized DATA and native keyboard input",
+    "Esc returns to OS event wait with IRQ enabled",
+    "SDK Minesweeper launches through original shell",
+    "Flag placement through OS keyboard event",
+    "Flag protects first cell",
+    "First click, flood reveal and 15 mines",
+    "First click neighborhood is safe",
+    "Active C drawing/input executes with IRQ enabled; system IRQs are serviced",
+    "Mine triggers loss",
+    "N restarts",
+    "Win opens all 81 safe cells and flags 15 mines",
+    "Esc returns to OS event wait with IRQ enabled",
+    "C DATA reinitializes on a second launch",
+    "Esc returns to OS event wait with IRQ enabled",
+    "Native Home handling returns to shell with IRQs enabled"
+  ],
+  "sdk_instruction_samples": 117148,
+  "installed": [
+    {
+      "name": "扫雷.exe",
+      "sha256": "fdd3ecab75fde506ae7ca31d200a43bb4b4bccdcd8c4d60819997e78a703b1b3",
+      "readback": "identical"
+    },
+    {
+      "name": "开发演示.exe",
+      "sha256": "eb8bc1ba49b5f1de80781aee5f7a76f6d3f770f40a6a2ea43e3e2688483ddb05",
+      "readback": "identical"
+    },
+    {
+      "name": "开发自检.exe",
+      "sha256": "476774b8347c9add9fee058a4c6a6338082d70e22e454fe51eaf8ec9d805ea83",
+      "readback": "identical"
+    }
+  ],
+  "final_cpu": {
+    "pc": 35146,
+    "a": 0,
+    "x": 160,
+    "y": 203,
+    "sp": 134,
+    "p": 50,
+    "cycles": 193005054,
+    "instructions": 3121568,
+    "interrupts": 2982,
+    "flags": 1
+  },
+  "firmware_sha256": "1f020acdb26a3081839e89f89f325649c231b89e7541505f9fa01edc4d4533a1"
+}

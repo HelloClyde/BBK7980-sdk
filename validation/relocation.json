@@ -1,0 +1,31 @@
+{
+  "result": "passed",
+  "sdk": "1.1.0",
+  "applications": [
+    {
+      "file": "开发演示.exe",
+      "sha256": "fac06805676ea8e62d155f765883d3fa3325e262123a76ab10a901462c5a4d1e"
+    },
+    {
+      "file": "开发自检.exe",
+      "sha256": "66dffeb66aaa31ac0e062b7e0d657164bcf49c5500d70b35cb6166d2f44041a2"
+    },
+    {
+      "file": "扫雷.exe",
+      "sha256": "56c199c25c6beb66e7036b9c51b0bf7f9d5b05939e9d64a4503f16de4bd665b9"
+    },
+    {
+      "file": "存储演示.exe",
+      "sha256": "17f36b67384db3dc6ab00b8cd5a92b2297dd3b5be12179575b54d5cfdc1dafcc"
+    },
+    {
+      "file": "音乐演示.exe",
+      "sha256": "4eccdefa0f494cb56c813618fe7edee4d353b1bd6db6fedc8759e490a8f988f2"
+    }
+  ],
+  "checks": [
+    "Five complete transfer files identical after clean runtime rebuild with bundled compiler",
+    "External project template builds independently",
+    "Unpacked SDK runs music using only runtime assets from the old portable emulator"
+  ]
+}

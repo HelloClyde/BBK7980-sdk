@@ -1,0 +1,15 @@
+{
+  "name": "BBK 7980 Native SDK",
+  "version": "1.1.0",
+  "edition": "community",
+  "target": "7980-v110",
+  "cpu": "65C02",
+  "firmware_sha256": "1f020acdb26a3081839e89f89f325649c231b89e7541505f9fa01edc4d4533a1",
+  "compiler": "cl65 V2.19 - Git eebf54a",
+  "validation": "Original-firmware emulator verified; physical device and PCLINK pending",
+  "interrupt_policy": "Application I flag remains clear; native kernel critical sections unchanged",
+  "capabilities": ["C runtime with native heap-backed stack", "native events", "native key translation", "native glyphs", "GBK text", "native file read/write/seek/delete", "PSG note sequences", "four-shade graphics", "application packaging"],
+  "program_bytes": 16383,
+  "data_bss_noinit_bytes": 2048,
+  "c_stack_bytes": 2048
+}
