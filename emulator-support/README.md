@@ -7,6 +7,9 @@ From the repository root, `python emulator-support/build.py` builds the DLL with
 GCC on PATH. The CPU provenance is retained in
 `vendor/s6502.c`; the board and UI are from the workspace BBK7980 emulator.
 
+The board model uses 128 KiB of external SRAM, based on the V1.10 firmware's
+program banks and concurrent heap allocations.
+
 No original system ROM, full NAND or font files are present. The SDK runner takes
 those inputs from the existing emulator selected with `--emulator`, copies the
 system image into its own `build/emulator-board/` directory, and installs examples

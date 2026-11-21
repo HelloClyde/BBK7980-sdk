@@ -11,7 +11,7 @@
 typedef struct { uint16_t pc; uint8_t ac, ix, iy, sp, status; } s6502_t;
 #define S6502_CPU_TYPE_DEFINED
 static s6502_t cpu;
-static uint8_t nor[0x80000], ram[0x100000], iram[0x4000], io[128];
+static uint8_t nor[0x80000], ram[128 * 1024], iram[0x4000], io[128];
 static uint8_t pins[7], keys[8], irq_service, waiting, stopped, flash_id;
 static uint64_t clocks, instructions, irq_count, io_reads[128], io_writes[128];
 static uint64_t next_base[5], next_timer[2], next_lcd;
@@ -65,12 +65,12 @@ static uint8_t ext_read(uint32_t a) {
         if (flash_id) return (a & 1) ? 0xa4 : 0x01;
         return nor[a & 0x7ffff];
     }
-    if (a < 0x800000) return ram[(a - 0x400000) & 0xfffff];
+    if (a < 0x800000) return ram[(a - 0x400000) & (sizeof ram - 1)];
     return 0xff;
 }
 static void ext_write(uint32_t a, uint8_t v) {
     if ((a&0xff0000)==0x500000) {nand_write(a,v);return;}
-    if (a >= 0x400000 && a < 0x800000) ram[(a - 0x400000) & 0xfffff] = v;
+    if (a >= 0x400000 && a < 0x800000) ram[(a - 0x400000) & (sizeof ram - 1)] = v;
     else if (a < 0x400000) {
         if (v == 0x90) flash_id = 1;
         if (v == 0xf0) flash_id = 0;
